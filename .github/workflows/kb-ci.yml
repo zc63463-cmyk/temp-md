@@ -1,0 +1,31 @@
+name: kb-ci
+
+on:
+  push:
+    paths:
+      - "Content/**"
+      - "scripts/**"
+      - ".github/workflows/kb-ci.yml"
+  pull_request:
+    paths:
+      - "Content/**"
+      - "scripts/**"
+      - ".github/workflows/kb-ci.yml"
+
+jobs:
+  gate-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run gates + scan
+        shell: bash
+        run: |
+          bash scripts/gate/gate_fourier_all.sh
+
